@@ -63,6 +63,16 @@ test('can add a blog', async () => {
   expect(blogsInDb.length).toBe(initialBlogs.length + 1)
 })
 
+test('adding without title and url returns 400', async () => {
+  cantSaveThis =
+  {
+    "url": "www.please.com",
+    "likes": 100
+  }
+
+  await api.post('/api/blogs').send(cantSaveThis).expect(400)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
