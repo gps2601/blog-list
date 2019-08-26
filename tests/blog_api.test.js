@@ -31,6 +31,11 @@ test('returns the right amount of blogs', async () => {
   expect(blogs.body.length).toBe(2)
 })
 
+test('has an _id identifier on blogs', async () => {
+  const blogs = await api.get('/api/blogs');
+  expect(blogs.body[0].id).toBeDefined();
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
