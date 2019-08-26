@@ -43,9 +43,24 @@ test('if no likes property, default will be 0', async () => {
     "url": "www.ask.com"
   }
 
-  const savedBlog = await  new Blog(likelessBlog).save()
+  const savedBlog = await new Blog(likelessBlog).save()
 
   expect(savedBlog.likes).toBe(0)
+})
+
+test('can add a blog', async () => {
+  newBlog =
+    {
+      "title": "newblog",
+      "author": "saveme",
+      "url": "www.please.com",
+      "likes": 100
+    }
+  await new Blog(newBlog).save()
+  
+  const blogsInDb = await Blog.find({})
+
+  expect(blogsInDb.length).toBe(initialBlogs.length + 1)
 })
 
 afterAll(() => {
