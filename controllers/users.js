@@ -5,6 +5,9 @@ const User = require('../models/user')
 usersRouter.post('/', async (request, response, next) => {
   try {
     const body = request.body
+    if (body.password.length <= 3) {
+      return response.status(400).json({ error: 'password too short' })
+    }
     const saltRounds = 10
     const passwordHash = await bcrypt.hash(body.password, saltRounds)
 
@@ -18,6 +21,9 @@ usersRouter.post('/', async (request, response, next) => {
 
     response.json(savedUser)
   } catch (exception) {
+    if (exception.name === 'ValidationError') {
+      return response.status(400).send({ error: exception.message })
+    }
     next(exception)
   }
 })
